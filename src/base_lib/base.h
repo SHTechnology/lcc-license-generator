@@ -52,12 +52,14 @@ typedef int bool;
 #define PARAM_VERSION_FROM "start-version"
 #define PARAM_VERSION_TO "end-version"
 #define PARAM_EXTRA_DATA "extra-data"
+#define PARAM_ISSUED_AT "issued_at"
+#define PARAM_PRODUCT "product"
+
 // license file extra entries
 #define LICENSE_SIGNATURE "sig"
 #define LICENSE_VERSION "lic_ver"
 #define PARAM_MAGIC_NUMBER \
-	"magic-num"  // this parameter must matched with the magic number passed in by the
-				 // application
+	"magic-num"  // this parameter must matched with the magic number passed in by the application
 // license file parameters -- copy this block to open-license-manager
 
 typedef enum { FUNC_RET_OK, FUNC_RET_NOT_AVAIL, FUNC_RET_ERROR, FUNC_RET_BUFFER_TOO_SMALL } FUNCTION_RETURN;

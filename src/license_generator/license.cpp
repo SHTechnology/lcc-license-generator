@@ -93,13 +93,20 @@ static const string print_for_sign(const string &feature_name, const CSimpleIniA
 	return buf.str();
 }
 
-License::License(const std::string *licenseName, const std::string &project_folder, bool base64)
-	: m_base64(base64), m_license_fname(licenseName), m_project_folder(normalize_project_path(project_folder)) {
+License::License(const std::string *license_fname, const std::string &project_folder, bool base64)
+	: m_base64(base64), m_license_fname(license_fname), m_project_folder(normalize_project_path(project_folder)) {
 	fs::path proj_folder(m_project_folder);
 	// default feature = project name
 	m_feature_names = proj_folder.filename().string();
 	m_private_key = (proj_folder / PRIVATE_KEY_FNAME).string();
 }
+License::License(const std::string *license_fname, const std::string &feature_name, const std::string &private_key,
+				 bool base64)
+	: m_base64(base64),
+	  m_license_fname(license_fname),
+	  m_project_folder(""),
+	  m_feature_names(feature_name),
+	  m_private_key(private_key) {}
 
 void License::write_license() {
 	ofstream license_stream;
@@ -130,7 +137,15 @@ void License::write_license() {
 	vector<string> feature_v;
 	boost::algorithm::split(feature_v, features, boost::is_any_of(","));
 	unique_ptr<CryptoHelper> crypto(CryptoHelper::getInstance());
-	crypto->loadPrivateKey_file(m_private_key);
+	if ( fs::exists(m_private_key) )
+	{
+		crypto->loadPrivateKey_file(m_private_key);
+	}
+	else
+	{
+		crypto->loadPrivateKey(m_private_key);
+	}
+	
 
 	for (const string feature : feature_v) {
 		ini.SetLongValue(feature.c_str(), "lic_ver", LICENSE_FILE_VERSION);

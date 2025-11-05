@@ -27,6 +27,8 @@ private:
 
 public:
 	License(const std::string *license_fname, const std::string &project_folder, bool base64 = false);
+	License(const std::string *license_fname, const std::string &feature_name, const std::string &private_key,
+			bool base64 = false);
 	void add_parameter(const std::string &param_name, const std::string &param_value);
 	void write_license();
 	inline virtual ~License() {}

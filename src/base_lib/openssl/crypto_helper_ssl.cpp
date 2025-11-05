@@ -76,10 +76,12 @@ const string CryptoHelperLinux::exportPrivateKey() const {
 	return dest;
 }
 
-const vector<unsigned char> CryptoHelperLinux::exportPublicKey() const {
+const vector<unsigned char> CryptoHelperLinux::exportPublicKey() const 
+{
 	if (m_pktmp == NULL) {
 		throw logic_error(string("Export not initialized.Call generateKeyPair first."));
 	}
+
 	BIO *bio_public = BIO_new(BIO_s_mem());
 	RSA *rsa = EVP_PKEY_get1_RSA(m_pktmp);
 	// PEM_write_bio_RSAPublicKey(bio_public, rsa);
@@ -100,11 +102,11 @@ const string CryptoHelperLinux::signString(const string &license) const {
 	size_t slen;
 	unsigned char *signature = nullptr;
 	/* Create the Message Digest Context */
-	EVP_MD_CTX *mdctx = EVP_MD_CTX_create();
+	EVP_MD_CTX *mdctx = EVP_MD_CTX_new();
 	if (!mdctx) {
 		throw logic_error("Message digest creation context");
 	}
-
+	
 	/*Initialise the DigestSign operation - SHA-256 has been selected
 	 * as the message digest function */
 	if (1 != EVP_DigestSignInit(mdctx, NULL, EVP_sha256(), NULL, m_pktmp)) {

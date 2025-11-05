@@ -25,6 +25,7 @@ target_link_libraries(lccgen PRIVATE license_generator_lib)
 
 #install instructions
 install(TARGETS lccgen EXPORT license_generator RUNTIME DESTINATION bin)
+install(TARGETS license_generator_lib EXPORT license_generator ARCHIVE DESTINATION licensecc/${LCC_PROJECT_NAME}/$<CONFIG> CONFIGURATIONS Debug Release)
 
 install(EXPORT license_generator NAMESPACE license_generator:: DESTINATION ${pkg_config_dest})
 install(FILES ../../cmake/lccgen-config.cmake DESTINATION ${pkg_config_dest})

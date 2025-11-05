@@ -148,6 +148,8 @@ static void issueLicense(const po::parsed_options &parsed, po::variables_map &vm
 		(PARAM_VERSION_TO, po::value<string>()->default_value("0", "All Versions"),  //
 		 "Specify the last version of the software this license apply to.")  //
 		(PARAM_EXTRA_DATA ",x", po::value<string>(), "Specify extra data to be included into the license")  //
+		(PARAM_ISSUED_AT, po::value<string>(), "Date of license issuance")  //
+		(PARAM_PRODUCT, po::value<string>(), "product key")	//
 		("help,h", "Print this help.");  //
 	if (rerunBoostPO(parsed, license_desc, vm, argv, "license issue", global)) {
 		if (!license_name.empty()) {
