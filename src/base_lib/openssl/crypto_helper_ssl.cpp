@@ -148,7 +148,7 @@ void CryptoHelperLinux::loadPrivateKey(const std::string &privateKey) {
 	}
 
 	m_pktmp = nullptr;
-	BIO *bio = BIO_new_mem_buf((void *)(privateKey.c_str()), privateKey.size());
+	BIO *bio = BIO_new_mem_buf((void *)(privateKey.c_str()), static_cast<int>(privateKey.size()));
 	m_pktmp = PEM_read_bio_PrivateKey(bio, &m_pktmp, NULL, NULL);
 	if (!m_pktmp) {
 		throw logic_error("Private key [" + privateKey + "] can't be loaded");
@@ -161,7 +161,7 @@ const string CryptoHelperLinux::Opensslb64Encode(const size_t slen, const unsign
 	BIO *b64 = BIO_new(BIO_f_base64());
 	BIO *bio1 = BIO_push(b64, mem_bio);
 	BIO_set_flags(bio1, BIO_FLAGS_BASE64_NO_NL);
-	BIO_write(bio1, signature, slen);
+	BIO_write(bio1, signature, static_cast<int>(slen));
 	BIO_flush(bio1);
 	char *charBuf;
 	int sz = BIO_get_mem_data(mem_bio, &charBuf);
