@@ -52,8 +52,8 @@ static const string guess_templates_folder(const string &source_folder) {
 									 "] does not exist. tried also [" + template_fname.string() + "]");
 		}
 	}
-	fs::path normalized = templates_path.normalize();
-	return normalized.string();
+	fs::path lexically_normal = templates_path.lexically_normal();
+	return lexically_normal.string();
 }
 static const fs::path publicKeyFolder(const fs::path &product_folder, const string &product_name) {
 	return product_folder / "include" / "licensecc" / product_name;
