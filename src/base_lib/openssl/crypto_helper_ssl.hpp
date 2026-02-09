@@ -22,18 +22,19 @@ private:
 	static const int kBits = 1024;
 	static const int kExp = 65537;
 	EVP_PKEY *m_pktmp;
-	const string Opensslb64Encode(const size_t slen, const unsigned char *signature) const;
-
+	const string Opensslb64Encode(const size_t slen, const unsigned char *signature) const;	
 public:
 	CryptoHelperLinux();
 	// disable copy constructor
 	CryptoHelperLinux(const CryptoHelperLinux &) = delete;
 
-	virtual void generateKeyPair();
-	const virtual string exportPrivateKey() const;
-	const virtual std::vector<unsigned char> exportPublicKey() const;
-	virtual void loadPrivateKey(const std::string &privateKey);
-	const virtual string signString(const string &stringToBeSigned) const;
+	virtual void generateKeyPair() override;
+	const virtual string exportPrivateKey() const override;
+	const virtual std::vector<unsigned char> exportPublicKey() const override;
+	virtual void loadPrivateKey(const std::string &privateKey) override;
+	const virtual string signString(const string &stringToBeSigned) const override;
+	void exportPublicKeyPemFile(const std::string& path) const override; 
+	
 	virtual ~CryptoHelperLinux();
 };
 

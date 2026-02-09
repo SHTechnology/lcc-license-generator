@@ -26,42 +26,36 @@ namespace license {
 namespace test {
 
 static void create_project(const fs::path& projects_folder, const fs::path& expectedPrivateKey,
-						   const fs::path& expected_public_key, const fs::path& mock_source_folder,
+						   const fs::path& expectedPublicKey, 
 						   const string& project_name) {
 	fs::remove_all(projects_folder);
 	BOOST_CHECK_MESSAGE(!fs::exists(expectedPrivateKey),
 						"Private key " + expectedPrivateKey.string() + " can't be deleted.");
-	BOOST_CHECK_MESSAGE(!fs::exists(expected_public_key),
-						"Public key " + expected_public_key.string() + " can't be deleted.");
-	const string mock_source = mock_source_folder.string();
+	BOOST_CHECK_MESSAGE(!fs::exists(expectedPublicKey),
+						"Public key " + expectedPublicKey.string() + " can't be deleted.");
 	const string projects_str = projects_folder.string();
-	int argc = 9;
+	int argc = 7;
 	const char* argv1[] = {"lcc",
 						   "project",
 						   "init",
 						   "-n",
 						   project_name.c_str(),
 						   "--projects-folder",
-						   projects_str.c_str(),
-						   "--templates",
-						   mock_source.c_str()};
+						   projects_str.c_str()};
 	// initialize_project
 	int result = CommandLineParser::parseCommandLine(argc, argv1);
 	BOOST_CHECK_EQUAL(result, 0);
 	BOOST_REQUIRE_MESSAGE(fs::exists(expectedPrivateKey), "Private key " + expectedPrivateKey.string() + " created.");
-	BOOST_CHECK_MESSAGE(fs::exists(expected_public_key), "Public key " + expected_public_key.string() + " created.");
+	BOOST_CHECK_MESSAGE(fs::exists(expectedPublicKey), "Public key " + expectedPublicKey.string() + " created.");
 }
 
 BOOST_AUTO_TEST_CASE(product_initialize_issue_license) {
 	const string project_name("TEST");
-	const fs::path mock_source_folder(fs::path(PROJECT_TEST_SRC_DIR) / "data" / "src");
 	const fs::path projects_folder(fs::path(PROJECT_TEST_TEMP_DIR) / "lcc_projects");
 	const fs::path expected_project_folder(projects_folder / project_name);
 	const fs::path expectedPrivateKey(projects_folder / project_name / PRIVATE_KEY_FNAME);
-	const fs::path expected_public_key(projects_folder / project_name / "include" / "licensecc" / project_name /
-									   PUBLIC_KEY_INC_FNAME);
-
-	create_project(projects_folder, expectedPrivateKey, expected_public_key, mock_source_folder, project_name);
+	const fs::path expectedPublicKey(projects_folder / project_name / PUBLIC_KEY_FNAME);
+	create_project(projects_folder, expectedPrivateKey, expectedPublicKey, project_name);
 	const string private_key_str = expectedPrivateKey.string();
 	const string project_folder_str = expected_project_folder.string();
 	// issue license in standard location
@@ -88,14 +82,12 @@ BOOST_AUTO_TEST_CASE(product_initialize_issue_license) {
 #if BOOST_VERSION > 106500
 BOOST_AUTO_TEST_CASE(product_initialize_issue_license_multi_feature) {
 	const string project_name("TEST");
-	const fs::path mock_source_folder(fs::path(PROJECT_TEST_SRC_DIR) / "data" / "src");
 	const fs::path projects_folder(fs::path(PROJECT_TEST_TEMP_DIR) / "lcc_projects");
 	const fs::path expected_project_folder(projects_folder / project_name);
 	const fs::path expectedPrivateKey(projects_folder / project_name / PRIVATE_KEY_FNAME);
-	const fs::path expected_public_key(projects_folder / project_name / "include" / "licensecc" / project_name /
-									   PUBLIC_KEY_INC_FNAME);
+	const fs::path expected_public_key(projects_folder / project_name / PUBLIC_KEY_FNAME);
 
-	create_project(projects_folder, expectedPrivateKey, expected_public_key, mock_source_folder, project_name);
+	create_project(projects_folder, expectedPrivateKey, expected_public_key, project_name);
 	const string private_key_str = expectedPrivateKey.string();
 	const string project_folder_str = expected_project_folder.string();
 	// issue license in standard location
@@ -142,21 +134,17 @@ BOOST_AUTO_TEST_CASE(issue_license_help) {
  */
 BOOST_AUTO_TEST_CASE(init_project_name_wrong) {
 	const string project_name("a/TEST");
-	const fs::path mock_source_folder(fs::path(PROJECT_TEST_SRC_DIR) / "data" / "src");
 	const fs::path projects_folder(fs::path(PROJECT_TEST_TEMP_DIR) / "lcc_projects_wa");
-	const string mock_source = mock_source_folder.string();
 	const string projects_str = projects_folder.string();
 
-	int argc = 9;
+	int argc = 7;
 	const char* argv1[] = {"lcc",
 						   "project",
 						   "init",
 						   "-n",
 						   project_name.c_str(),
 						   "--projects-folder",
-						   projects_str.c_str(),
-						   "--templates",
-						   mock_source.c_str()};
+						   projects_str.c_str()};
 	int result;
 	boost::test_tools::output_test_stream output;
 	{

@@ -27,18 +27,19 @@ public:
 	CryptoHelperWindows();
 	CryptoHelperWindows(const CryptoHelperWindows &) = delete;
 
-	virtual void generateKeyPair();
+	virtual void generateKeyPair() override;
 	/*
 	 * exports the private key in openssl pkcs#1 PEM encoded format.
 	 */
-	const virtual string exportPrivateKey() const;
-	const virtual vector<unsigned char> exportPublicKey() const;
+	const virtual string exportPrivateKey() const override;
+	const virtual vector<unsigned char> exportPublicKey() const override;
 	/*
 	 * loads a private key in openssl pkcs#1 PEM encoded format.
 	 */
-	virtual void loadPrivateKey(const std::string &privateKey);
-	const virtual string signString(const string &license) const;
-
+	virtual void loadPrivateKey(const std::string &privateKey) override;
+	const virtual string signString(const string &license) const override;
+	void exportPublicKeyPemFile(const std::string& path) const override;
+	
 	virtual ~CryptoHelperWindows();
 };
 

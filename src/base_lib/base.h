@@ -29,7 +29,7 @@ typedef int bool;
 #endif
 
 #define PRIVATE_KEY_FNAME "private_key.rsa"
-#define PUBLIC_KEY_INC_FNAME "public_key.h"
+#define PUBLIC_KEY_FNAME "public_key.pem"
 
 /**
  * Version at the beginning of license file.

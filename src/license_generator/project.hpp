@@ -19,16 +19,13 @@ class Project {
 private:
 	const std::string m_name;
 	boost::optional<std::string> m_primary_key_file_name(boost::optional<std::string>());
-	boost::optional<std::string> m_public_key_file_name(boost::optional<std::string>());
-	void exportPublicKey(const std::string &include_folder, const std::unique_ptr<CryptoHelper> &cryptoHelper);
+	void exportPublicKey(const std::string &path, const std::unique_ptr<CryptoHelper> &cryptoHelper);
 
 	std::string m_project_folder;
-	std::string m_templates_folder;
 	const bool m_force_overwrite;
 
 public:
-	Project(const std::string &name, const std::string &project_folder, const std::string &source_folder,
-			const bool force_overwrite = false);
+	Project(const std::string &name, const std::string &project_folder, const bool force_overwrite = false);
 	FUNCTION_RETURN initialize();
 	~Project();
 };

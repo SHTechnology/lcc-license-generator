@@ -95,7 +95,6 @@ static void initializeProject(const po::parsed_options &parsed, po::variables_ma
 	boost::optional<std::string> primary_key;
 	boost::optional<std::string> public_key;
 	std::string project_folder;
-	std::string templates_folder;
 	project_desc.add_options()  //
 		("project-name,n", po::value<std::string>(&project_name)->required(), "New project name (required).")  //
 		(PARAM_PRIMARY_KEY, po::value<boost::optional<std::string>>(&primary_key),
@@ -104,12 +103,9 @@ static void initializeProject(const po::parsed_options &parsed, po::variables_ma
 		 "Use externally generated public key, private key must also be specified.")  //
 		("projects-folder,p", po::value<std::string>(&project_folder)->default_value("."),  //
 		 "path to where all the projects configurations are stored.")  //
-		("templates,t", po::value<std::string>(&templates_folder)->default_value("."),
-		 "path to the templates folder.")  //
 		("help", "Print this help.");  //
 	if (rerunBoostPO(parsed, project_desc, vm, argv, "project init", global)) {
-		// cout << templates_folder.is_initialized() << endl;
-		Project project(project_name, project_folder, templates_folder);
+		Project project(project_name, project_folder);
 		project.initialize();
 	}
 }

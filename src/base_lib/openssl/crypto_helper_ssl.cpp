@@ -171,6 +171,33 @@ const string CryptoHelperLinux::Opensslb64Encode(const size_t slen, const unsign
 	return signatureStr;
 }
 
+void CryptoHelperLinux::exportPublicKeyPemFile(const std::string& path) const {
+	if (!m_pktmp) {
+		throw std::logic_error("key not initialized");
+	}
+
+	FILE* fp = fopen(path.c_str(), "wb");
+	if (!fp) {
+		throw std::logic_error("cannot open file: " + path);
+	}
+
+	RSA* rsa = EVP_PKEY_get1_RSA(m_pktmp);
+	if (!rsa) {
+		fclose(fp);
+		throw std::logic_error("get rsa failed");
+	}
+
+	if (PEM_write_RSAPublicKey(fp, rsa) != 1) {
+		RSA_free(rsa);
+		fclose(fp);
+		throw std::logic_error("write public key failed");
+	}
+
+	RSA_free(rsa);
+	fclose(fp);
+}
+
+
 CryptoHelperLinux::~CryptoHelperLinux() {
 	if (m_pktmp != nullptr) {
 		EVP_PKEY_free(m_pktmp);

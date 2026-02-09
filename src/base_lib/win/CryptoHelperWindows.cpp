@@ -254,12 +254,6 @@ RSAPublicKey ::= SEQUENCE {
 		ss << "-----BEGIN RSA PRIVATE KEY-----" << endl;
 		ss << base64(&encoded[0], encoded.size(), 65);
 		ss << "-----END RSA PRIVATE KEY-----" << endl;
-		/*
-		ofstream mystream;
-		mystream.open("C:\\encoded.bin", fstream::binary | fstream::trunc);
-		for (const auto& e : encoded) mystream << e;
-		mystream.close();
-		*/
 		return ss.str();
 	}
 
@@ -414,5 +408,22 @@ RSAPublicKey ::= SEQUENCE {
 			throw logic_error("Error signing data " + error);
 		}
 		return signatureBuffer;
+	}
+
+	void CryptoHelperWindows::exportPublicKeyPemFile(const std::string& path) const {
+		if (!m_hTmpKey) {
+			throw std::logic_error("key not initialized");
+		}
+		std::vector<unsigned char> der = exportPublicKey();
+
+		std::ofstream ofs(path, std::ios::binary | std::ios::trunc);
+		if (!ofs) {
+			throw std::logic_error("cannot open file: " + path);
+		}
+
+		ofs << "-----BEGIN RSA PUBLIC KEY-----\n";
+		ofs << base64(der.data(), der.size(), 65);
+		if (der.size() > 0) ofs << "\n";
+		ofs << "-----END RSA PUBLIC KEY-----\n";
 	}
 } /* namespace license */

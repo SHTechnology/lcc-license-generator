@@ -32,10 +32,10 @@ public:
 
 	/**
 	 * Load the private key from a file.
-	 * @param privateKey_file_name
+	 * @param path
 	 * name of the file where the private key is stored.
 	 */
-	virtual void loadPrivateKey_file(const std::string &privateKey_file_name);
+	virtual void loadPrivateKey_file(const std::string& path);
 
 	/**
 	 * Load the private key from a string.
@@ -49,6 +49,13 @@ public:
 	 * @return
 	 */
 	const virtual std::string signString(const std::string &license) const = 0;
+	/**
+	 * @brief
+	 * export PublicKey
+	 * @param path public key filepath
+	 */
+	virtual void exportPublicKeyPemFile(const std::string& path) const = 0;
+
 	static std::unique_ptr<CryptoHelper> getInstance();
 	virtual ~CryptoHelper() {}
 };

@@ -22,11 +22,11 @@ unique_ptr<CryptoHelper> CryptoHelper::getInstance() {
 	return ptr;
 }
 
-void CryptoHelper::loadPrivateKey_file(const std::string &privateKey_file_name) {
-	if (!fs::exists(privateKey_file_name)) {
-		throw logic_error("Private key file [" + privateKey_file_name + "] does not exists");
+void CryptoHelper::loadPrivateKey_file(const std::string &path) {
+	if (!fs::exists(path)) {
+		throw logic_error("Private key file [" + path + "] does not exists");
 	}
-	std::ifstream private_key(privateKey_file_name);
+	std::ifstream private_key(path);
 	std::string pk_string((std::istreambuf_iterator<char>(private_key)), std::istreambuf_iterator<char>());
 	loadPrivateKey(pk_string);
 }
